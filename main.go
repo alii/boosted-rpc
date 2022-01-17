@@ -33,7 +33,14 @@ func main() {
 		case "connected":
 			now := time.Now()
 
-			err := client.SetActivity(client.Activity{
+			// Safe to call login every time as we check
+			// if we are already logged in
+			if err := client.Login("932730208820265011"); err != nil {
+				println("Could not login to boosted RPC")
+				return err
+			}
+
+			if err := client.SetActivity(client.Activity{
 				State:      "Riding my Boosted Board v3",
 				Details:    "Out and about...",
 				LargeImage: "v3",
@@ -41,15 +48,10 @@ func main() {
 				SmallImage: "logo_black",
 				SmallText:  "Boosted Boards Logo",
 				Timestamps: &client.Timestamps{Start: &now},
-			})
-
-			if err != nil {
+			}); err != nil {
 				println("Couldn't start boosted rpc! " + err.Error())
+				return err
 			}
-
-			// Safe to call login every time as we check
-			// if we are already logged in
-			err = client.Login("932730208820265011")
 
 			break
 
