@@ -66,5 +66,9 @@ func main() {
 		return c.SendStatus(200)
 	})
 
-	_ = app.Listen(":" + port)
+	println("ight we lit on " + port)
+
+	if err := app.Listen(":" + port); err != nil {
+		panic(err)
+	}
 }
